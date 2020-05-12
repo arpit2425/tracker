@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const authMiddleware = require("./middleware/requestAuth");
 require("./models/userModel");
 
 const authRoute = require("./routes/authRoute");
@@ -14,8 +15,8 @@ mongoose
   })
   .then(() => console.log("db connected"))
   .catch((err) => console.log(err));
-app.get("/", (req, res) => {
-  res.send("HI");
+app.get("/", authMiddleware, (req, res) => {
+  res.send(req.user);
 });
 app.listen(3000, () => {
   console.log("listening");
