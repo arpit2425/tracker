@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const express = require("express");
+const User = mongoose.model("User");
 module.exports = (req, res, next) => {
   const { authoraization } = req.headers;
   if (!authoraization) {
@@ -11,6 +12,8 @@ module.exports = (req, res, next) => {
     if (err) {
       return res.status(401).send({ message: "You must  login " });
     }
+    const { userId } = payload;
+    const user = await User.findById(userId);
   });
   next();
 };
